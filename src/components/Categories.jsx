@@ -8,7 +8,9 @@ const Categories = () => {
 
   return (
     <div>
-      <h2 className="font-semibold">All Categories ({categories.length})</h2>
+      <h2 className="text-primary mb-5 font-semibold">
+        All Categories ({categories.length})
+      </h2>
       <ul className="text-center">
         {categories.map((category) => (
           <li key={category.id} className="font-semibold text-[#9F9F9F]">
