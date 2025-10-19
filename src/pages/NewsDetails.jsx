@@ -16,7 +16,6 @@ const NewsDetails = () => {
     }
   }, [newsData, id]);
 
-  console.log(news);
   if (!news) {
     return (
       <div className="flex min-h-screen items-center justify-center text-gray-500">

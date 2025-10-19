@@ -1,20 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { useLoaderData, useParams } from "react-router";
+import { useEffect, useState } from "react";
+import { useLoaderData, useOutletContext, useParams } from "react-router";
 import NewsCard from "../components/NewsCard";
 
 const CategoryNews = () => {
   const { id } = useParams();
+  const { setNews } = useOutletContext();
   const newsData = useLoaderData();
 
   const [categoryNews, setCategoryNews] = useState([]);
-
-  // console.log(newsData, id);
 
   useEffect(() => {
     if (id === "0") {
       setCategoryNews(newsData);
       return;
     } else if (id === "1") {
+      const breakingNews = newsData.filter(
+        (news) => news.others.is_today_pick === true,
+      );
+      console.log(breakingNews);
+      setNews(breakingNews);
+
       const trendingNews = newsData.filter(
         (news) => news.others.is_trending === true,
       );

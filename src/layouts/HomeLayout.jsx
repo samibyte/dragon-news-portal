@@ -5,16 +5,18 @@ import Navbar from "../components/Navbar/Navbar";
 import LeftAside from "../components/HomeLayout/LeftAside";
 import RightAside from "../components/HomeLayout/RightAside";
 import Loader from "../components/Loader";
+import { useState } from "react";
 
 const HomeLayout = () => {
   const { state } = useNavigation();
+  const [news, setNews] = useState();
 
   return (
     <div>
       <header className="mt-12">
         <Header />
         <section className="mx-auto mt-7 mb-5 flex w-10/12">
-          <Headline />
+          <Headline news={news} />
         </section>
         <nav className="mx-auto flex w-10/12">
           <Navbar />
@@ -25,7 +27,7 @@ const HomeLayout = () => {
           <LeftAside />
         </aside>
         <section className="main col-span-6">
-          {state == "loading" ? <Loader /> : <Outlet />}
+          {state == "loading" ? <Loader /> : <Outlet context={{ setNews }} />}
         </section>
         <aside className="sticky top-3 col-span-3 h-fit">
           <RightAside />
