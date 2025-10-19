@@ -28,7 +28,7 @@ const router = createBrowserRouter([
     element: <h1>authlayoutlayout</h1>,
   },
   {
-    path: "*",
+    path: "/*",
     element: <h1>error 404</h1>,
   },
 ]);
