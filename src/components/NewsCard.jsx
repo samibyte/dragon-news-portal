@@ -4,16 +4,8 @@ import { BsShare } from "react-icons/bs";
 import { IoBookmarkOutline } from "react-icons/io5";
 
 const NewsCard = ({ news }) => {
-  const {
-    id,
-    title,
-    author,
-    thumbnail_url,
-    details,
-    total_view,
-    rating,
-    tags,
-  } = news;
+  const { id, title, author, thumbnail_url, details, total_view, rating } =
+    news;
 
   return (
     <div className="card bg-base-100 overflow-hidden rounded-xl shadow-lg">
@@ -61,7 +53,7 @@ const NewsCard = ({ news }) => {
       <div className="mt-3 px-4 text-sm text-gray-600">
         <p>{details.slice(0, 200)}...</p>
         <Link
-          to={`/newsDetails/${id}`}
+          to={`/news-details/${id}`}
           className="mt-1 inline-block font-semibold text-[#FF8C47] hover:underline"
         >
           Read More

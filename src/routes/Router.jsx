@@ -3,9 +3,10 @@ import HomeLayout from "../layouts/HomeLayout";
 import Home from "../pages/Home";
 import CategoryNews from "../pages/CategoryNews";
 import AuthLayout from "../layouts/AuthLayout";
-import { Component } from "react";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import NewsDetails from "../pages/NewsDetails";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -24,8 +25,14 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/news",
-    element: <h1>newslayout</h1>,
+    path: "/news-details/:id",
+    element: (
+      <PrivateRoute>
+        <NewsDetails />
+      </PrivateRoute>
+    ),
+    loader: () => fetch("/news.json"),
+    hydrateFallbackElement: <h1>loading</h1>,
   },
   {
     path: "/auth",
