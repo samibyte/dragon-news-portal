@@ -5,11 +5,12 @@ import AuthContext from "../../contexts/AuthContext";
 
 const Navbar = () => {
   const { user, signOutUser } = use(AuthContext);
+  console.log(user);
 
   return (
     <div className="flex w-full items-center justify-between">
       <div>
-        <p>{user ? `Hi, ${user?.email}` : "welcome, guest!"}</p>
+        <p>{user ? `Hi, ${user?.displayName}` : "welcome, guest!"}</p>
       </div>
       <ul className="text-secondary flex gap-3">
         <li>
@@ -23,7 +24,11 @@ const Navbar = () => {
         </li>
       </ul>
       <div className="flex items-center gap-2">
-        <img className="w-10" src={userLogo} alt="" />
+        <img
+          className="w-10 overflow-hidden rounded-full object-cover"
+          src={user ? user.photoURL : userLogo}
+          alt=""
+        />
         <Link to="/auth/login">
           {user ? (
             <button
