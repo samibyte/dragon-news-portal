@@ -2,10 +2,17 @@ import React, { use } from "react";
 import AuthContext from "../contexts/AuthContext";
 
 const SocialLogin = () => {
-  const { signInWithGoogle, setUser } = use(AuthContext);
+  const { signInWithGoogle, signInWithGithub, setUser } = use(AuthContext);
 
   const handleGoogleSignIn = () => {
     signInWithGoogle()
+      .then((result) => {
+        setUser(result.user);
+      })
+      .catch((err) => console.error(err));
+  };
+  const handleGithubSignIn = () => {
+    signInWithGithub()
       .then((result) => {
         setUser(result.user);
       })
@@ -52,7 +59,10 @@ const SocialLogin = () => {
         </button>
 
         {/* GitHub */}
-        <button className="btn border-black bg-black text-white">
+        <button
+          onClick={handleGithubSignIn}
+          className="btn border-black bg-black text-white"
+        >
           <svg
             aria-label="GitHub logo"
             width="16"

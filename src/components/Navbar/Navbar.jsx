@@ -28,18 +28,20 @@ const Navbar = () => {
           src={user ? user.photoURL : userLogo}
           alt=""
         />
-        <Link to="/auth/login">
-          {user ? (
+        {user ? (
+          <Link to="/">
             <button
               onClick={signOutUser}
               className="btn btn-primary px-7 text-white"
             >
               Log out
             </button>
-          ) : (
+          </Link>
+        ) : (
+          <Link to="/auth/login">
             <button className="btn btn-primary px-7 text-white">Login</button>
-          )}
-        </Link>
+          </Link>
+        )}
       </div>
     </div>
   );
