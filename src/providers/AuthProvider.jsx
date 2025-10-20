@@ -7,6 +7,7 @@ import {
   GithubAuthProvider,
   GoogleAuthProvider,
   onAuthStateChanged,
+  sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -43,9 +44,12 @@ const AuthProvider = ({ children }) => {
 
   const updateUserProfile = (profileUpdates) => {
     setLoading(true);
-    return updateProfile(auth.currentUser, {
-      profileUpdates,
-    });
+    return updateProfile(auth.currentUser, profileUpdates);
+  };
+
+  const emailVerification = () => {
+    setLoading(true);
+    return sendEmailVerification(auth.currentUser);
   };
 
   const resetPasswordEmail = (email) => {
@@ -75,6 +79,7 @@ const AuthProvider = ({ children }) => {
     signInWithGoogle,
     signInWithGithub,
     updateUserProfile,
+    emailVerification,
     resetPasswordEmail,
     signOutUser,
   };

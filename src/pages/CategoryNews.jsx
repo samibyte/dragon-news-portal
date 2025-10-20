@@ -17,7 +17,6 @@ const CategoryNews = () => {
       const breakingNews = newsData.filter(
         (news) => news.others.is_today_pick === true,
       );
-      console.log(breakingNews);
       setNews(breakingNews);
 
       const trendingNews = newsData.filter(

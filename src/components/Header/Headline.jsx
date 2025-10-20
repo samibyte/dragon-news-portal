@@ -1,8 +1,6 @@
 import Marquee from "react-fast-marquee";
 
 const Headline = ({ news }) => {
-  console.log(news);
-
   return (
     <div className="text-primary bg-base-200 flex items-center gap-3 p-3 font-semibold">
       <p className="bg-accent px-3 py-2 text-white">Latest</p>

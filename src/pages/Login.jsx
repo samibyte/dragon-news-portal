@@ -3,7 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router";
 import AuthContext from "../contexts/AuthContext";
 
 const Login = () => {
-  const { setUser, signInUser, resetPasswordEmail } = use(AuthContext);
+  const { setUser, signInUser, resetPasswordEmail, signOutUser } =
+    use(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -15,6 +16,12 @@ const Login = () => {
 
     signInUser(email, password)
       .then((result) => {
+        console.log(result);
+        if (!result.user.emailVerified) {
+          console.log("Please verify your email first.");
+          signOutUser();
+          return;
+        }
         setUser(result.user);
         navigate(`${location.state ? location.state : "/"}`);
       })

@@ -3,7 +3,13 @@ import { Link, useNavigate } from "react-router";
 import AuthContext from "../contexts/AuthContext";
 
 const Register = () => {
-  const { setUser, createUser, updateUserProfile } = use(AuthContext);
+  const {
+    setUser,
+    createUser,
+    updateUserProfile,
+    emailVerification,
+    signOutUser,
+  } = use(AuthContext);
 
   const navigate = useNavigate();
 
@@ -19,8 +25,19 @@ const Register = () => {
       .then((result) => {
         updateUserProfile({ displayName: name, photoURL: photo })
           .then(() => {
+            return result.user.reload();
+          })
+          .then(() => {
             setUser({ ...result.user, displayName: name, photoURL: photo });
-            navigate("/");
+            alert("Account created successfully");
+
+            emailVerification()
+              .then(() => {
+                alert("Email verification link sent!");
+                signOutUser();
+              })
+              .catch((err) => console.error(err));
+            navigate("/auth/login");
           })
           .catch((err) => {
             console.error(err);
