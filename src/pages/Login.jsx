@@ -8,44 +8,43 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-    signInUser(email, password)
-      .then((result) => {
-        console.log(result);
-        if (!result.user.emailVerified) {
-          console.log("Please verify your email first.");
-          signOutUser();
-          return;
-        }
-        setUser(result.user);
-        navigate(`${location.state ? location.state : "/"}`);
-      })
-      .catch((err) => console.error(err));
+    try {
+      const result = await signInUser(email, password);
+      const user = result.user;
+
+      if (!user.emailVerified) {
+        alert("Please verify your email first");
+        signOutUser();
+        return;
+      }
+      setUser(user);
+      navigate(location.state ? location.state : "/");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const emailRef = useRef(null);
 
-  const handleResetPassEmail = () => {
+  const handleResetPassEmail = async () => {
     const email = emailRef.current?.value;
     if (!email) {
       return alert("Please enter your email first.");
     }
-
-    resetPasswordEmail(email)
-      .then(() => {
-        alert("Password reset email sent!");
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        alert(errorMessage);
-        // ..
-      });
+    try {
+      await resetPasswordEmail(email);
+      alert("Password reset email sent!");
+    } catch (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      alert(errorMessage);
+    }
   };
   return (
     <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">

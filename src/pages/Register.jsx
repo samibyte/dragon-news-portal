@@ -1,8 +1,9 @@
-import { use } from "react";
+import { use, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import AuthContext from "../contexts/AuthContext";
 
 const Register = () => {
+  const [disabled, setDisabled] = useState(false);
   const {
     setUser,
     createUser,
@@ -13,38 +14,35 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
+    setDisabled(true);
 
-    const name = e.target.name.value;
-    const photo = e.target.photoURL.value;
-    const email = e.target.email.value;
-    const password = e.target.password.value;
+    const name = e.target.name.value.trim();
+    const photo = e.target.photoURL.value.trim() || null;
+    const email = e.target.email.value.trim();
+    const password = e.target.password.value.trim();
 
-    createUser(email, password)
-      .then((result) => {
-        updateUserProfile({ displayName: name, photoURL: photo })
-          .then(() => {
-            return result.user.reload();
-          })
-          .then(() => {
-            setUser({ ...result.user, displayName: name, photoURL: photo });
-            alert("Account created successfully");
+    try {
+      const result = await createUser(email, password);
+      const user = result.user;
 
-            emailVerification()
-              .then(() => {
-                alert("Email verification link sent!");
-                signOutUser();
-              })
-              .catch((err) => console.error(err));
-            navigate("/auth/login");
-          })
-          .catch((err) => {
-            console.error(err);
-            setUser(result.user);
-          });
-      })
-      .catch((err) => console.error(err));
+      await Promise.all([
+        updateUserProfile({ displayName: name, photoURL: photo }),
+        emailVerification(),
+      ]);
+
+      setUser({ ...user, displayName: name, photoURL: photo });
+      alert("Account created successfully! Please verify your email.");
+
+      await signOutUser();
+
+      navigate("/auth/login");
+    } catch (err) {
+      console.error("Registration error:", err);
+      alert(err.message || "Registration failed. Try again.");
+    }
+    setDisabled(false);
   };
 
   return (
@@ -60,6 +58,7 @@ const Register = () => {
             type="text"
             className="input"
             placeholder="Your Name"
+            required
           />
 
           <label className="label">Photo URL</label>
@@ -76,6 +75,7 @@ const Register = () => {
             type="email"
             className="input"
             placeholder="Email"
+            required
           />
 
           <label className="label">Password</label>
@@ -84,9 +84,14 @@ const Register = () => {
             type="password"
             className="input"
             placeholder="Password"
+            required
           />
 
-          <button type="submit" className="btn btn-primary my-4">
+          <button
+            disabled={disabled}
+            type="submit"
+            className="btn btn-primary my-4"
+          >
             Sign Up
           </button>
           <p>
