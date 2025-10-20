@@ -41,7 +41,6 @@ const Login = () => {
       await resetPasswordEmail(email);
       alert("Password reset email sent!");
     } catch (error) {
-      const errorCode = error.code;
       const errorMessage = error.message;
       alert(errorMessage);
     }

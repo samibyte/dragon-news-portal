@@ -1,22 +1,26 @@
-import React, { use } from "react";
+import { use } from "react";
 import AuthContext from "../contexts/AuthContext";
 
 const SocialLogin = () => {
   const { signInWithGoogle, signInWithGithub, setUser } = use(AuthContext);
 
-  const handleGoogleSignIn = () => {
-    signInWithGoogle()
-      .then((result) => {
-        setUser(result.user);
-      })
-      .catch((err) => console.error(err));
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithGoogle();
+      const user = result.user;
+      setUser(user);
+    } catch (err) {
+      console.error(err);
+    }
   };
-  const handleGithubSignIn = () => {
-    signInWithGithub()
-      .then((result) => {
-        setUser(result.user);
-      })
-      .catch((err) => console.error(err));
+  const handleGithubSignIn = async () => {
+    try {
+      const result = await signInWithGithub();
+      const user = result.user;
+      setUser(user);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
